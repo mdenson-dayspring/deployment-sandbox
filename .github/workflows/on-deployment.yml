@@ -1,4 +1,4 @@
-name: Build and Deploy on Deployment
+name: Deployment
 
 on: deployment
 
@@ -41,7 +41,7 @@ jobs:
       with:
         state: failure
 
-  production:
+  copy-to-prod:
     if: ${{ github.event.deployment.environment == 'production' }}
     runs-on: ubuntu-latest
 
