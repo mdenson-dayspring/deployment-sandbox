@@ -18,6 +18,7 @@ jobs:
               with:
                   auto_merge: false
                   environment: production
+                  required_contexts: "build"
                   description: "Releasing ${{ github.ref }} as ${{ github.event.inputs.version }}"
                   payload: "{\"version\": \"${{ github.event.inputs.version }}\"}"
 
