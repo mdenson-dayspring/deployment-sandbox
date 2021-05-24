@@ -1,0 +1,21 @@
+name: Deploy Stage
+on:
+    workflow_dispatch:
+        inputs:
+            version:
+                description: 'Version Number'
+                required: true
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: chrnorm/deployment-action@releases/v1
+              name: Create GitHub deployment
+              id: deployment
+              with:
+                  token: "${{ secrets.GITHUB_TOKEN }}"
+                  environment: stage
+                  description: "${{ github.event.inputs.version }}"
+            - name: Print deployment id
+              run: echo "deployment_id = ${{ steps.deployment.outputs.deployment_id }}"
