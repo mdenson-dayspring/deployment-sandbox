@@ -5,7 +5,9 @@ on:
             version:
                 description: 'Version Number'
                 required: true
-
+env:
+    GITHUB_TOKEN: ${{ secrets.REPO_DEPLOY_TOKEN }}
+    
 jobs:
     deploy:
         runs-on: ubuntu-latest
@@ -17,8 +19,6 @@ jobs:
                   auto_merge: false
                   environment: stage
                   payload: "{\"version\": \"${{ github.event.inputs.version }}\"}"
-              env:
-                  GITHUB_TOKEN: ${{ secrets.REPO_DEPLOY_TOKEN }}
 
             - name: Print deployment url
               run: echo "${{ steps.deployment.outputs.deployment_url }}"
