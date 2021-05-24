@@ -24,3 +24,7 @@ jobs:
 
             - name: Print deployment url
               run: echo "${{ steps.deployment.outputs.deployment_url }}"
+
+            - name: Most likely Stage has not been built yet
+              if: failure()
+              run: echo "Has stage been built/deployed for this commit?"
