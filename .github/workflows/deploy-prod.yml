@@ -1,4 +1,4 @@
-name: Deploy Stage
+name: Deploy Production
 on:
     workflow_dispatch:
         inputs:
@@ -17,9 +17,9 @@ jobs:
               id: deployment
               with:
                   auto_merge: false
-                  environment: stage
-                  description: "Staging ${{ github.ref }} as ${{ github.event.inputs.version }}-stage"
-                  payload: "{\"version\": \"${{ github.event.inputs.version }}-stage\"}"
+                  environment: production
+                  description: "Releasing ${{ github.ref }} as ${{ github.event.inputs.version }}"
+                  payload: "{\"version\": \"${{ github.event.inputs.version }}\"}"
 
             - name: Print deployment url
               run: echo "${{ steps.deployment.outputs.deployment_url }}"

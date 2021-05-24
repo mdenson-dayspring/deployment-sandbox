@@ -27,7 +27,7 @@ jobs:
         release_name: Release ${{ github.event.deployment.payload.version }}
         body: ${{ github.event.deployment.description }}
         draft: false
-        prerelease: true
+        prerelease: ${{ github.event.deployment.environment != 'production' }}
 
     - name: Set Deployment Status to Success if everything goes well
       uses: avakar/set-deployment-status@v1
