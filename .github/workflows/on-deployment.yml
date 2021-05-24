@@ -1,0 +1,77 @@
+name: Build and Deploy on Deployment
+
+on: deployment
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+jobs:
+  build:
+    if: ${{ github.event.deployment.environment != 'production' }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set Deployment Status to In Progress
+      uses: avakar/set-deployment-status@v1
+      with:
+        state: in_progress
+
+    - name: Output event information
+      run: |
+        echo ${{ github.event.deployment.environment }}
+        echo ${{ github.event.deployment.payload.version }}
+
+    - name: Create Release
+      uses: actions/create-release@v1
+      with:
+        tag_name: ${{ github.event.deployment.payload.version }}
+        release_name: Release ${{ github.event.deployment.payload.version }}
+        body: ${{ github.event.deployment.description }}
+        draft: false
+        prerelease: true
+
+    - name: Set Deployment Status to Success if everything goes well
+      uses: avakar/set-deployment-status@v1
+      with:
+        state: success
+
+    - name: Set Deployment Status to Failure if error
+      uses: avakar/set-deployment-status@v1
+      if: failure()
+      with:
+        state: failure
+
+  production:
+    if: ${{ github.event.deployment.environment == 'production' }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set Deployment Status to In Progress
+      uses: avakar/set-deployment-status@v1
+      with:
+        state: in_progress
+
+    - name: Output event information
+      run: |
+        echo ${{ github.event.deployment.environment }}
+        echo ${{ github.event.deployment.payload.version }}
+
+    - name: Create Release
+      uses: actions/create-release@v1
+      with:
+        tag_name: ${{ github.event.deployment.payload.version }}
+        release_name: Release ${{ github.event.deployment.payload.version }}
+        body: ${{ github.event.deployment.description }}
+        draft: false
+        prerelease: false
+
+    - name: Set Deployment Status to Success if everything goes well
+      uses: avakar/set-deployment-status@v1
+      with:
+        state: success
+
+    - name: Set Deployment Status to Failure if error
+      uses: avakar/set-deployment-status@v1
+      if: failure()
+      with:
+        state: failure
