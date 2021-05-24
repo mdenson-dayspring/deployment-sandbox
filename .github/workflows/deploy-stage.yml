@@ -10,12 +10,15 @@ jobs:
     deploy:
         runs-on: ubuntu-latest
         steps:
-            - uses: chrnorm/deployment-action@releases/v1
+            - uses: avakar/create-deployment@v1
               name: Create GitHub deployment
               id: deployment
               with:
-                  token: "${{ secrets.GITHUB_TOKEN }}"
+                  auto_merge: false
                   environment: stage
-                  description: "${{ github.event.inputs.version }}"
-            - name: Print deployment id
-              run: echo "deployment_id = ${{ steps.deployment.outputs.deployment_id }}"
+                  payload: "{\"version\": \"${{ github.event.inputs.version }}\"}"
+              env:
+                  GITHUB_TOKEN: ${{ secrets.REPO_DEPLOY_TOKEN }}
+
+            - name: Print deployment url
+              run: echo "${{ steps.deployment.outputs.deployment_url }}"
