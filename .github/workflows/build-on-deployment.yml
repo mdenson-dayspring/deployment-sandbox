@@ -3,7 +3,7 @@ name: Build and Deploy on Deployment
 on: deployment
 
 env:
-    GITHUB_TOKEN: ${{ secrets.REPO_DEPLOY_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
 jobs:
   build:
