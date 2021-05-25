@@ -1,0 +1,16 @@
+name: Deployment Status Change
+
+on: deployment_status
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Output event information
+      run: |
+        echo ${{ github.event.deployment_status.state }}
+
